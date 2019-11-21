@@ -14,18 +14,40 @@ namespace openlocally
         ///  The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
-            string localpath = TestShares(@"\\thexp\Share\chromium\videos\023\Rendering in WebKit.mp4-");
-            if (localpath == null)
-                exitProgram("aaa");
-
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+
+            if (args.Length == 0)
+                exitProgram(Properties.Resources.NO_ARGUMENTS);
+
+            string inputpath = args[0];
+            string localpath = TestShares(inputpath);
+            if (localpath == null)
+                exitProgram(Properties.Resources.LOCAL_PATH_NOT_FOUND);
+
+            openInExplorer( localpath);
+
+            
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new FormMain());
         }
 
+        // https://stackoverflow.com/a/696144
+        static void openInExplorer(string filePath)
+        {
+            if (!File.Exists(filePath))
+            {
+                return;
+            }
+
+            // combine the arguments together
+            // it doesn't matter if there is a space after ','
+            string argument = "/select, \"" + filePath + "\"";
+
+            System.Diagnostics.Process.Start("explorer.exe", argument);
+        }
         static string getServer(string netfile)
         {
             if (netfile.Length < 3)
@@ -56,6 +78,7 @@ namespace openlocally
         }
         static void exitProgram(string error)
         {
+            MessageBox.Show(error, Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
             Environment.Exit(1);
         }
 

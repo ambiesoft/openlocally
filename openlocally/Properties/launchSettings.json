@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "openlocally": {
+      "commandName": "Project",
+      "commandLineArgs": "\\\\thexp\\Share\\chromium\\videos\\023\\movie.org"
+    }
+  }
+}
