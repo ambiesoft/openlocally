@@ -123,4 +123,13 @@
   <data name="NO_ARGUMENTS" xml:space="preserve">
     <value>No Arguments</value>
   </data>
+  <data name="SERVERANDSHARE_NULL" xml:space="preserve">
+    <value>Serve and Share are null</value>
+  </data>
+  <data name="SERVER_NULL" xml:space="preserve">
+    <value>Server is null</value>
+  </data>
+  <data name="SHARECOLLECTION_NULL" xml:space="preserve">
+    <value>ShareCollection is null</value>
+  </data>
 </root>

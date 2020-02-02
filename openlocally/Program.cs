@@ -22,12 +22,23 @@ namespace openlocally
                 exitProgram(Properties.Resources.NO_ARGUMENTS);
 
             string inputpath = args[0];
-            string localpath = TestShares(inputpath);
-            if (localpath == null)
-                exitProgram(Properties.Resources.LOCAL_PATH_NOT_FOUND);
-
-            openInExplorer( localpath);
-
+            string fullpath = Path.GetFullPath(inputpath);
+            string localpath;
+            if (Char.IsLetter(fullpath[0]) &&
+                fullpath[1] == ':' &&
+                fullpath[2] == '\\')
+            {
+                localpath = fullpath;
+            }
+            else
+            {
+                localpath = GetLocalPath(inputpath);
+                if (localpath == null)
+                    exitProgram(Properties.Resources.LOCAL_PATH_NOT_FOUND);
+            }
+                
+            openInExplorer(localpath);
+            
             
             //Application.EnableVisualStyles();
             //Application.SetCompatibleTextRenderingDefault(false);
@@ -92,18 +103,18 @@ namespace openlocally
             }
             return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
-        static string TestShares(string netfile)
+        static string GetLocalPath(string netfile)
         {
             string server = getServer(netfile);
             if (server == null || server.ToLower() != Environment.MachineName.ToLower())
-                exitProgram("aaa");
+                exitProgram(Properties.Resources.SERVER_NULL);
             ShareCollection shi = ShareCollection.LocalShares;
             if (shi == null)
-                exitProgram("aaa");
+                exitProgram(Properties.Resources.SHARECOLLECTION_NULL);
 
             string serverandshare = getServerAndShare(netfile);
             if (serverandshare == null)
-                exitProgram("aaa");
+                exitProgram(Properties.Resources.SERVERANDSHARE_NULL);
             foreach (Share si in shi)
             {
                 if (si.ShareType==ShareType.Disk && si.IsFileSystem)

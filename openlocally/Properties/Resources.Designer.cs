@@ -77,5 +77,32 @@ namespace openlocally.Properties {
                 return ResourceManager.GetString("NO_ARGUMENTS", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server is null.
+        /// </summary>
+        internal static string SERVER_NULL {
+            get {
+                return ResourceManager.GetString("SERVER_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Serve and Share are null.
+        /// </summary>
+        internal static string SERVERANDSHARE_NULL {
+            get {
+                return ResourceManager.GetString("SERVERANDSHARE_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to ShareCollection is null.
+        /// </summary>
+        internal static string SHARECOLLECTION_NULL {
+            get {
+                return ResourceManager.GetString("SHARECOLLECTION_NULL", resourceCulture);
+            }
+        }
     }
 }
