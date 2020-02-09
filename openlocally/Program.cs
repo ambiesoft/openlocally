@@ -48,8 +48,9 @@ namespace openlocally
         // https://stackoverflow.com/a/696144
         static void openInExplorer(string filePath)
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(filePath) && !Directory.Exists(filePath))
             {
+                exitProgram(string.Format(Properties.Resources.FILE_OR_FOLDER_NOT_EXIST, filePath));
                 return;
             }
 

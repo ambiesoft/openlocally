@@ -61,6 +61,15 @@ namespace openlocally.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to File or Folder &apos;{0}&apos; does not exist..
+        /// </summary>
+        internal static string FILE_OR_FOLDER_NOT_EXIST {
+            get {
+                return ResourceManager.GetString("FILE_OR_FOLDER_NOT_EXIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Local path not found.
         /// </summary>
         internal static string LOCAL_PATH_NOT_FOUND {
