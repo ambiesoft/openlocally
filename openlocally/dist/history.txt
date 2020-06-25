@@ -1,0 +1,2 @@
+2020/06/25 v1.0.2
+Accept Network Drive

@@ -2,7 +2,7 @@
   "profiles": {
     "openlocally": {
       "commandName": "Project",
-      "commandLineArgs": "\\\\Thexp\\Share\\Media\\確定申告"
+      "commandLineArgs": "-v G:\\vcpkg"
     }
   }
 }

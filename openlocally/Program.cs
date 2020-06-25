@@ -1,7 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Trinet.Networking;
@@ -10,6 +14,12 @@ namespace openlocally
 {
     static class Program
     {
+        [DllImport("mpr.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern int WNetGetConnection(
+            [MarshalAs(UnmanagedType.LPTStr)] string localName,
+            [MarshalAs(UnmanagedType.LPTStr)] StringBuilder remoteName,
+            ref int length);
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -18,6 +28,19 @@ namespace openlocally
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
+            foreach (string arg in args)
+            {
+                if (arg == "-v" || arg == "/v")
+                {
+                    MessageBox.Show(Application.ProductName +
+                        " ver" +
+                        Ambiesoft.AmbLib.getAssemblyVersion(Assembly.GetExecutingAssembly(), 3),
+                        Application.ProductName,
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                    return;
+                }
+            }
             if (args.Length == 0)
                 exitProgram(Properties.Resources.NO_ARGUMENTS);
 
@@ -28,15 +51,35 @@ namespace openlocally
                 fullpath[1] == ':' &&
                 fullpath[2] == '\\')
             {
-                localpath = fullpath;
+                // First assume fullpath is Network Drive
+                var sb = new StringBuilder(512);
+                var size = sb.Capacity;
+                var error = WNetGetConnection(fullpath.Substring(0, 2), sb, ref size);
+                if (error == 0)
+                {
+                    // success, fullpath is Network Drive
+                    var networkpath = sb.ToString();
+                    if (networkpath.Length == 0)
+                        exitProgram("Network paht is null");
+                    networkpath += fullpath.Substring(2);
+
+                    localpath = GetLocalPath(networkpath);
+                }
+                else
+                {
+                    // normal drive
+                    // exitProgram((new Win32Exception(error, "WNetGetConnection failed").ToString()));
+                    localpath = fullpath;
+                }
             }
             else
             {
                 localpath = GetLocalPath(inputpath);
-                if (localpath == null)
-                    exitProgram(Properties.Resources.LOCAL_PATH_NOT_FOUND);
             }
-                
+
+            if (localpath == null || localpath.Length == 0)
+                exitProgram(Properties.Resources.LOCAL_PATH_NOT_FOUND);
+
             openInExplorer(localpath);
             
             
