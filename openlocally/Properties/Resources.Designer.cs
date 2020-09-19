@@ -88,6 +88,15 @@ namespace openlocally.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Program &apos;{0}&apos; does not exist..
+        /// </summary>
+        internal static string PROGRAM_NOT_EXIST {
+            get {
+                return ResourceManager.GetString("PROGRAM_NOT_EXIST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server is null.
         /// </summary>
         internal static string SERVER_NULL {
@@ -111,6 +120,15 @@ namespace openlocally.Properties {
         internal static string SHARECOLLECTION_NULL {
             get {
                 return ResourceManager.GetString("SHARECOLLECTION_NULL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Too many arguments.
+        /// </summary>
+        internal static string TOO_MANY_ARGUMENTS {
+            get {
+                return ResourceManager.GetString("TOO_MANY_ARGUMENTS", resourceCulture);
             }
         }
     }

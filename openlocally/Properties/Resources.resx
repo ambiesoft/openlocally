@@ -126,6 +126,9 @@
   <data name="NO_ARGUMENTS" xml:space="preserve">
     <value>No Arguments</value>
   </data>
+  <data name="PROGRAM_NOT_EXIST" xml:space="preserve">
+    <value>Program '{0}' does not exist.</value>
+  </data>
   <data name="SERVERANDSHARE_NULL" xml:space="preserve">
     <value>Serve and Share are null</value>
   </data>
@@ -134,5 +137,8 @@
   </data>
   <data name="SHARECOLLECTION_NULL" xml:space="preserve">
     <value>ShareCollection is null</value>
+  </data>
+  <data name="TOO_MANY_ARGUMENTS" xml:space="preserve">
+    <value>Too many arguments</value>
   </data>
 </root>

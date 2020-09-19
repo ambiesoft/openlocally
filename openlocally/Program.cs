@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Trinet.Networking;
+using NDesk.Options;
 
 namespace openlocally
 {
@@ -20,6 +21,16 @@ namespace openlocally
             [MarshalAs(UnmanagedType.LPTStr)] StringBuilder remoteName,
             ref int length);
 
+        static void showVersion()
+        {
+            MessageBox.Show(Application.ProductName +
+    " ver" +
+    Ambiesoft.AmbLib.getAssemblyVersion(Assembly.GetExecutingAssembly(), 3),
+    Application.ProductName,
+    MessageBoxButtons.OK,
+    MessageBoxIcon.Information);
+        }
+
         /// <summary>
         ///  The main entry point for the application.
         /// </summary>
@@ -28,23 +39,32 @@ namespace openlocally
         {
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
-            foreach (string arg in args)
-            {
-                if (arg == "-v" || arg == "/v")
-                {
-                    MessageBox.Show(Application.ProductName +
-                        " ver" +
-                        Ambiesoft.AmbLib.getAssemblyVersion(Assembly.GetExecutingAssembly(), 3),
-                        Application.ProductName,
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                    return;
-                }
-            }
-            if (args.Length == 0)
-                exitProgram(Properties.Resources.NO_ARGUMENTS);
+            string program = string.Empty;
 
-            string inputpath = args[0];
+
+            List<string> extraCommandLineArgs = new List<string>();
+
+            var p = new OptionSet()
+                .Add("v|version", dummy => { showVersion(); Environment.Exit(0); })
+                .Add("p=|program=", prog => { if (prog != null) program = prog; })
+                ;
+
+            try
+            {
+                extraCommandLineArgs = p.Parse(args);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                Environment.Exit(0);
+            }
+
+            if (extraCommandLineArgs.Count == 0)
+                exitProgram(Properties.Resources.NO_ARGUMENTS);
+            if (extraCommandLineArgs.Count != 1)
+                exitProgram(Properties.Resources.NO_ARGUMENTS);
+            string inputpath = extraCommandLineArgs[0];
+
             string fullpath = Path.GetFullPath(inputpath);
             string localpath;
             if (Char.IsLetter(fullpath[0]) &&
@@ -80,7 +100,7 @@ namespace openlocally
             if (localpath == null || localpath.Length == 0)
                 exitProgram(Properties.Resources.LOCAL_PATH_NOT_FOUND);
 
-            openInExplorer(localpath);
+            openInExplorer(localpath,program);
             
             
             //Application.EnableVisualStyles();
@@ -89,7 +109,7 @@ namespace openlocally
         }
 
         // https://stackoverflow.com/a/696144
-        static void openInExplorer(string filePath)
+        static void openInExplorer(string filePath, string program)
         {
             if (!File.Exists(filePath) && !Directory.Exists(filePath))
             {
@@ -97,11 +117,28 @@ namespace openlocally
                 return;
             }
 
-            // combine the arguments together
-            // it doesn't matter if there is a space after ','
-            string argument = "/select, \"" + filePath + "\"";
-
-            System.Diagnostics.Process.Start("explorer.exe", argument);
+            try
+            {
+                if (string.IsNullOrEmpty(program))
+                {
+                    // combine the arguments together
+                    // it doesn't matter if there is a space after ','
+                    string argument = "/select, \"" + filePath + "\"";
+                    System.Diagnostics.Process.Start("explorer.exe", argument);
+                }
+                else
+                {
+                    if (!File.Exists(program))
+                    {
+                        exitProgram(string.Format(Properties.Resources.PROGRAM_NOT_EXIST, program));
+                    }
+                    System.Diagnostics.Process.Start(program, Ambiesoft.AmbLib.doubleQuoteIfSpace(filePath));
+                }
+            }
+            catch(Exception ex)
+            {
+                exitProgram(ex.Message);
+            }
         }
         static string getServer(string netfile)
         {

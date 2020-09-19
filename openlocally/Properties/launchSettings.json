@@ -2,7 +2,7 @@
   "profiles": {
     "openlocally": {
       "commandName": "Project",
-      "commandLineArgs": "-v G:\\vcpkg"
+      "commandLineArgs": "G:\\vcpkg -p C:\\LegacyPrograms\\TE\\TE64.exe"
     }
   }
 }
