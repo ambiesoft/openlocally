@@ -1,3 +1,6 @@
+2020/12/14 v1.0.4
+Add option '-o' for open remote path if it is not resolved.
+
 2020/09/19 v1.0.3
 Option 'program' added
 

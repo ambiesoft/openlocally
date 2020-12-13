@@ -70,11 +70,20 @@ namespace openlocally.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Local path not found.
+        ///   Looks up a localized string similar to Local path for &apos;{0}&apos; is not found..
         /// </summary>
         internal static string LOCAL_PATH_NOT_FOUND {
             get {
                 return ResourceManager.GetString("LOCAL_PATH_NOT_FOUND", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to More than one argument.
+        /// </summary>
+        internal static string MORE_THAN_1_ARGUMENTS {
+            get {
+                return ResourceManager.GetString("MORE_THAN_1_ARGUMENTS", resourceCulture);
             }
         }
         
@@ -84,6 +93,15 @@ namespace openlocally.Properties {
         internal static string NO_ARGUMENTS {
             get {
                 return ResourceManager.GetString("NO_ARGUMENTS", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;{0}&apos; is not hosted on this machine..
+        /// </summary>
+        internal static string PATH_NOT_HOSTED {
+            get {
+                return ResourceManager.GetString("PATH_NOT_HOSTED", resourceCulture);
             }
         }
         

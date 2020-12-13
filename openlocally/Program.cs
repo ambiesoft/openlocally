@@ -40,13 +40,14 @@ namespace openlocally
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
 
             string program = string.Empty;
-
+            bool openRemote = false;
 
             List<string> extraCommandLineArgs = new List<string>();
 
             var p = new OptionSet()
                 .Add("v|version", dummy => { showVersion(); Environment.Exit(0); })
                 .Add("p=|program=", prog => { if (prog != null) program = prog; })
+                .Add("o|openremote", dummy=> { openRemote = true; })
                 ;
 
             try
@@ -62,7 +63,7 @@ namespace openlocally
             if (extraCommandLineArgs.Count == 0)
                 exitProgram(Properties.Resources.NO_ARGUMENTS);
             if (extraCommandLineArgs.Count != 1)
-                exitProgram(Properties.Resources.NO_ARGUMENTS);
+                exitProgram(Properties.Resources.MORE_THAN_1_ARGUMENTS);
             string inputpath = extraCommandLineArgs[0];
 
             string fullpath = Path.GetFullPath(inputpath);
@@ -94,11 +95,21 @@ namespace openlocally
             }
             else
             {
+                // UNC
                 localpath = GetLocalPath(inputpath);
+                if(localpath==null)
+                {
+                    if (openRemote)
+                    {
+                        openInExplorer(inputpath, program);
+                        return;
+                    }
+                    // exitProgram(string.Format(Properties.Resources.PATH_NOT_HOSTED, netfile));
+                }
             }
 
             if (localpath == null || localpath.Length == 0)
-                exitProgram(Properties.Resources.LOCAL_PATH_NOT_FOUND);
+                exitProgram(string.Format(Properties.Resources.LOCAL_PATH_NOT_FOUND, inputpath));
 
             openInExplorer(localpath,program);
             
@@ -111,7 +122,9 @@ namespace openlocally
         // https://stackoverflow.com/a/696144
         static void openInExplorer(string filePath, string program)
         {
-            if (!File.Exists(filePath) && !Directory.Exists(filePath))
+            bool isFile = File.Exists(filePath);
+            bool isDir = Directory.Exists(filePath);
+            if (!isFile && !isDir)
             {
                 exitProgram(string.Format(Properties.Resources.FILE_OR_FOLDER_NOT_EXIST, filePath));
                 return;
@@ -121,10 +134,18 @@ namespace openlocally
             {
                 if (string.IsNullOrEmpty(program))
                 {
-                    // combine the arguments together
-                    // it doesn't matter if there is a space after ','
-                    string argument = "/select, \"" + filePath + "\"";
-                    System.Diagnostics.Process.Start("explorer.exe", argument);
+                    if (isFile)
+                    {
+                        // combine the arguments together
+                        // it doesn't matter if there is a space after ','
+                        string argument = "/select, \"" + filePath + "\"";
+                        System.Diagnostics.Process.Start("explorer.exe", argument);
+                    }
+                    else
+                    {
+                        System.Diagnostics.Process.Start("explorer.exe",
+                            "\"" + filePath + "\"");
+                    }
                 }
                 else
                 {
@@ -187,8 +208,13 @@ namespace openlocally
         static string GetLocalPath(string netfile)
         {
             string server = getServer(netfile);
-            if (server == null || server.ToLower() != Environment.MachineName.ToLower())
+            if (server == null)
                 exitProgram(Properties.Resources.SERVER_NULL);
+            if (server.ToLower() != Environment.MachineName.ToLower())
+            {
+                return null;
+            }
+
             ShareCollection shi = ShareCollection.LocalShares;
             if (shi == null)
                 exitProgram(Properties.Resources.SHARECOLLECTION_NULL);
