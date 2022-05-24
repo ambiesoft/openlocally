@@ -114,6 +114,7 @@ namespace openlocally
                 exitProgram(string.Format(Properties.Resources.LOCAL_PATH_NOT_FOUND, inputpath));
 
             if (changedFromNetworkDrive
+                && !Directory.Exists(localpath)
                 && MessageBox.Show(
                     String.Format(Properties.Resources.PATH_RESOLVED_DO_YOU_WANT_TO_OPEN,localpath),
                     Application.ProductName,

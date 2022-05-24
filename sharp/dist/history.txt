@@ -1,4 +1,6 @@
+2022/05/25 v1.0.7
 When UNC is converted, A dialog will be shown asking user to open it
+If input is Directory, the dialog does not appear
 
 2022/05/24 v1.0.6
 Ask user if the input path converted to a local path
