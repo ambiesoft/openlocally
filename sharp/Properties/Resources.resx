@@ -132,6 +132,9 @@
   <data name="PATH_NOT_HOSTED" xml:space="preserve">
     <value>'{0}' is not hosted on this machine.</value>
   </data>
+  <data name="PATH_RESOLVED_DO_YOU_WANT_TO_OPEN" xml:space="preserve">
+    <value>Path is resolved to '{0}'. Do you want to open it?</value>
+  </data>
   <data name="PROGRAM_NOT_EXIST" xml:space="preserve">
     <value>Program '{0}' does not exist.</value>
   </data>

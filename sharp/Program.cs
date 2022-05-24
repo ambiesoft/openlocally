@@ -21,12 +21,11 @@ namespace openlocally
 
         static void showVersion()
         {
-            MessageBox.Show(Application.ProductName +
-    " ver" +
-    Ambiesoft.AmbLib.getAssemblyVersion(Assembly.GetExecutingAssembly(), 3),
-    Application.ProductName,
-    MessageBoxButtons.OK,
-    MessageBoxIcon.Information);
+            MessageBox.Show(
+                Application.ProductName + " ver" + Ambiesoft.AmbLib.getAssemblyVersion(Assembly.GetExecutingAssembly(), 3),
+                Application.ProductName,
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -68,6 +67,7 @@ namespace openlocally
 
             string fullpath = Path.GetFullPath(inputpath);
             string localpath;
+            bool changedFromNetworkDrive = false;
             if (Char.IsLetter(fullpath[0]) &&
                 fullpath[1] == ':' &&
                 fullpath[2] == '\\')
@@ -85,6 +85,7 @@ namespace openlocally
                     networkpath += fullpath.Substring(2);
 
                     localpath = GetLocalPath(networkpath);
+                    changedFromNetworkDrive = true;
                 }
                 else
                 {
@@ -111,11 +112,31 @@ namespace openlocally
             if (localpath == null || localpath.Length == 0)
                 exitProgram(string.Format(Properties.Resources.LOCAL_PATH_NOT_FOUND, inputpath));
 
-            openInExplorer(localpath, program);
+            if (changedFromNetworkDrive
+                && MessageBox.Show(
+                    String.Format(Properties.Resources.PATH_RESOLVED_DO_YOU_WANT_TO_OPEN,localpath),
+                    Application.ProductName,
+                    MessageBoxButtons.YesNo, 
+                    MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                openCommon(localpath);
+            }
+            else
+            {
+                openInExplorer(localpath, program);
+            }
+        }
 
-
-
-            //Application.Run(new FormMain());
+        private static void openCommon(string localpath)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(localpath);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, Application.ProductName);
+            }
         }
 
         // https://stackoverflow.com/a/696144
