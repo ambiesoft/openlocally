@@ -98,6 +98,7 @@ namespace openlocally
             {
                 // UNC
                 localpath = GetLocalPath(inputpath);
+                changedFromNetworkDrive = true;
                 if (localpath == null)
                 {
                     if (openRemote)
