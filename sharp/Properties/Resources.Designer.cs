@@ -61,6 +61,15 @@ namespace openlocally.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Do you want to open it?.
+        /// </summary>
+        internal static string DO_YOU_WANT_TO_OPEN {
+            get {
+                return ResourceManager.GetString("DO_YOU_WANT_TO_OPEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to File or Folder &apos;{0}&apos; does not exist..
         /// </summary>
         internal static string FILE_OR_FOLDER_NOT_EXIST {
@@ -97,6 +106,15 @@ namespace openlocally.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The path &apos;{0}&apos; is local path..
+        /// </summary>
+        internal static string PATH_IS_ORIGINALLY_LOCAL {
+            get {
+                return ResourceManager.GetString("PATH_IS_ORIGINALLY_LOCAL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &apos;{0}&apos; is not hosted on this machine..
         /// </summary>
         internal static string PATH_NOT_HOSTED {
@@ -106,7 +124,7 @@ namespace openlocally.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Path is resolved to &apos;{0}&apos;. Do you want to open it?.
+        ///   Looks up a localized string similar to Path is resolved to &apos;{0}&apos;..
         /// </summary>
         internal static string PATH_RESOLVED_DO_YOU_WANT_TO_OPEN {
             get {

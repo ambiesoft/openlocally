@@ -68,6 +68,7 @@ namespace openlocally
             string fullpath = Path.GetFullPath(inputpath);
             string localpath;
             bool changedFromNetworkDrive = false;
+            bool originallyLocal = false;
             if (Char.IsLetter(fullpath[0]) &&
                 fullpath[1] == ':' &&
                 fullpath[2] == '\\')
@@ -91,6 +92,7 @@ namespace openlocally
                 {
                     // normal drive
                     // exitProgram((new Win32Exception(error, "WNetGetConnection failed").ToString()));
+                    originallyLocal = true;
                     localpath = fullpath;
                 }
             }
@@ -113,12 +115,17 @@ namespace openlocally
             if (localpath == null || localpath.Length == 0)
                 exitProgram(string.Format(Properties.Resources.LOCAL_PATH_NOT_FOUND, inputpath));
 
-            if (changedFromNetworkDrive
+            if ((changedFromNetworkDrive || originallyLocal)
                 && !Directory.Exists(localpath)
                 && MessageBox.Show(
-                    String.Format(Properties.Resources.PATH_RESOLVED_DO_YOU_WANT_TO_OPEN,localpath),
+                    String.Format(
+                        (originallyLocal ?
+                        Properties.Resources.PATH_IS_ORIGINALLY_LOCAL :
+                        Properties.Resources.PATH_RESOLVED_DO_YOU_WANT_TO_OPEN), localpath) +
+                        " " + 
+                        String.Format(Properties.Resources.DO_YOU_WANT_TO_OPEN),
                     Application.ProductName,
-                    MessageBoxButtons.YesNo, 
+                    MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 openCommon(localpath);
