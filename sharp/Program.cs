@@ -214,7 +214,7 @@ namespace openlocally
 
             int secondsep = netfile.IndexOf('\\', firstsep + 1);
             if (secondsep <= 0)
-                return null;
+                return netfile;
 
             return netfile.Substring(0, secondsep);
         }

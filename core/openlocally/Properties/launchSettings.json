@@ -2,7 +2,7 @@
   "profiles": {
     "openlocally": {
       "commandName": "Project",
-      "commandLineArgs": "\"\\\\Thexp\\Share\\National Diet Library 国立国会図書館\""
+      "commandLineArgs": "-o \\\\thexp\\music"
     }
   }
 }
