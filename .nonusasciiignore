@@ -1,0 +1,7 @@
+*.dsp
+*.pdf
+*.ico
+*.tlb
+*.rc
+*.vcxproj.filters
+*.png
