@@ -113,7 +113,10 @@ namespace openlocally
             }
 
             if (localpath == null || localpath.Length == 0)
-                exitProgram(string.Format(Properties.Resources.LOCAL_PATH_NOT_FOUND, inputpath));
+                exitProgram(string.Format(
+                    Properties.Resources.LOCAL_PATH_NOT_FOUND,
+                    inputpath,
+                    Environment.MachineName));
 
             if ((changedFromNetworkDrive || originallyLocal)
                 && !Directory.Exists(localpath)
