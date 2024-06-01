@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "openlocally": {
-      "commandName": "Project",
-      "commandLineArgs": "-o \\\\thexp\\music"
-    }
-  }
-}
