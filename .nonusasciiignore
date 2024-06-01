@@ -5,3 +5,5 @@
 *.rc
 *.vcxproj.filters
 *.png
+
+Properties/Resources.Designer.cs
